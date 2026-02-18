@@ -3,16 +3,14 @@ import { useCardStore } from "../stores/cardStore";
 
 interface Props {
   data: CardMeta;
-  width: number;
 }
 
-export default function CardItem({ data, width }: Props) {
+export default function CardItem({ data }: Props) {
   const setSelectedCard = useCardStore((s) => s.setSelectedCard);
 
   return (
     <div
       onClick={() => setSelectedCard(data.path)}
-      style={{ width }}
       className="bg-slate-800 border border-slate-700 rounded-xl p-4 cursor-pointer hover:border-blue-500 hover:bg-slate-750 transition-colors"
     >
       <h3 className="text-sm font-semibold text-slate-100 mb-2 line-clamp-2">
