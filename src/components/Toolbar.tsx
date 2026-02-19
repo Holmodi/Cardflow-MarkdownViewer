@@ -4,11 +4,6 @@ import { useCardStore } from "../stores/cardStore";
 import { scanDirectory } from "../lib/tauri";
 import type { SortBy } from "../types/card";
 
-interface Props {
-  showSettings: boolean;
-  onToggleSettings: () => void;
-}
-
 // 防抖 hook
 function useDebounce<T>(value: T, delay: number): T {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -21,7 +16,7 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-export default function Toolbar({ showSettings, onToggleSettings }: Props) {
+export default function Toolbar() {
   const searchQuery = useCardStore((s) => s.searchQuery);
   const setSearchQuery = useCardStore((s) => s.setSearchQuery);
   const sortBy = useCardStore((s) => s.sortBy);
@@ -32,7 +27,6 @@ export default function Toolbar({ showSettings, onToggleSettings }: Props) {
   const setIsScanning = useCardStore((s) => s.setIsScanning);
   const setCurrentDir = useCardStore((s) => s.setCurrentDir);
   const clearCards = useCardStore((s) => s.clearCards);
-  const cards = useCardStore((s) => s.cards);
 
   // 搜索防抖（300ms 延迟）
   const [inputValue, setInputValue] = useState(searchQuery);
@@ -118,23 +112,6 @@ export default function Toolbar({ showSettings, onToggleSettings }: Props) {
           transition-all duration-200 cursor-pointer"
       >
         {sortOrder === "asc" ? "↑" : "↓"}
-      </button>
-
-      <span className="text-xs text-slate-500 shrink-0 px-2">{cards.size} 张卡片</span>
-
-      <button
-        onClick={onToggleSettings}
-        className={`px-3 py-2 rounded-xl text-sm transition-all duration-200 cursor-pointer
-          ${showSettings
-            ? "bg-primary-600 text-white"
-            : "bg-slate-800/80 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white hover:border-slate-600"
-        }`}
-        title="显示设置"
-      >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-        </svg>
       </button>
     </div>
   );

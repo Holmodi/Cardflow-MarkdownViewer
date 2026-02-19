@@ -2,6 +2,7 @@ import { create } from "zustand";
 import type { CardMeta, SortBy, SortOrder } from "../types/card";
 import type { DisplaySettings } from "../types/settings";
 import { defaultSettings } from "../types/settings";
+import { scanDirectory } from "../lib/tauri";
 
 function loadSettings(): DisplaySettings {
   try {
@@ -9,6 +10,14 @@ function loadSettings(): DisplaySettings {
     if (raw) return { ...defaultSettings, ...JSON.parse(raw) };
   } catch {}
   return defaultSettings;
+}
+
+function loadLastDir(): string | null {
+  try {
+    return localStorage.getItem("card-flow-last-dir");
+  } catch {
+    return null;
+  }
 }
 
 interface CardStore {
@@ -35,17 +44,18 @@ interface CardStore {
   setCurrentDir: (dir: string) => void;
   clearCards: () => void;
   updateSettings: (partial: Partial<DisplaySettings>) => void;
+  loadLastDir: () => void;
 }
 
 export const useCardStore = create<CardStore>((set) => ({
   cards: new Map(),
   searchQuery: "",
   selectedTags: [],
-  sortBy: "title",
-  sortOrder: "asc",
+  sortBy: "created",
+  sortOrder: "desc",
   selectedCard: null,
   isScanning: false,
-  currentDir: null,
+  currentDir: loadLastDir(),
   settings: loadSettings(),
 
   addCards: (cards) =>
@@ -83,7 +93,12 @@ export const useCardStore = create<CardStore>((set) => ({
   setSortOrder: (sortOrder) => set({ sortOrder }),
   setSelectedCard: (selectedCard) => set({ selectedCard }),
   setIsScanning: (isScanning) => set({ isScanning }),
-  setCurrentDir: (currentDir) => set({ currentDir }),
+  setCurrentDir: (currentDir) => {
+    if (currentDir) {
+      localStorage.setItem("card-flow-last-dir", currentDir);
+    }
+    set({ currentDir });
+  },
   clearCards: () => set({ cards: new Map(), selectedCard: null }),
   updateSettings: (partial) =>
     set((state) => {
@@ -91,4 +106,11 @@ export const useCardStore = create<CardStore>((set) => ({
       localStorage.setItem("card-flow-settings", JSON.stringify(next));
       return { settings: next };
     }),
+  loadLastDir: () => {
+    const lastDir = loadLastDir();
+    if (lastDir) {
+      set({ currentDir: lastDir });
+      scanDirectory(lastDir);
+    }
+  },
 }));
