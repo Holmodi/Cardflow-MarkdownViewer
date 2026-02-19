@@ -13,14 +13,18 @@ export function useTauriEvents() {
     const unlisten: Array<() => void> = [];
 
     async function setup() {
+      console.log("[useTauriEvents] Setting up event listeners");
+
       unlisten.push(
         await listen<ScanBatch>("scan-batch", (event) => {
+          console.log("[scan-batch] Received:", event.payload);
           addCards(event.payload.cards);
         })
       );
 
       unlisten.push(
-        await listen<ScanComplete>("scan-complete", (_event) => {
+        await listen<ScanComplete>("scan-complete", (event) => {
+          console.log("[scan-complete] Received:", event.payload);
           setIsScanning(false);
         })
       );

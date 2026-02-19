@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useCardStore } from "../stores/cardStore";
 import { scanDirectory } from "../lib/tauri";

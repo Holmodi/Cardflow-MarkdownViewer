@@ -7,9 +7,16 @@ use tauri::{AppHandle, Emitter};
 use crate::frontmatter::parse_card;
 use crate::models::{CardMeta, ScanBatch, ScanComplete};
 
+macro_rules! log {
+    ($($arg:tt)*) => {
+        eprintln!("[scanner] {}", format!($($arg)*))
+    };
+}
+
 const BATCH_SIZE: usize = 200;
 
 pub fn scan_directory(app: &AppHandle, dir: &str) {
+    log!("Starting scan of directory: {}", dir);
     let start = Instant::now();
     let mut batch: Vec<CardMeta> = Vec::with_capacity(BATCH_SIZE);
     let mut total: usize = 0;
@@ -19,31 +26,47 @@ pub fn scan_directory(app: &AppHandle, dir: &str) {
         .git_ignore(true)
         .build();
 
+    let mut files_checked: usize = 0;
+    let mut non_md_files: usize = 0;
+    let mut parse_failures: usize = 0;
+
     for entry in walker.flatten() {
         let path = entry.path();
+        files_checked += 1;
+
         if !path.is_file() {
             continue;
         }
-        if path.extension().and_then(|e| e.to_str()) != Some("md") {
+        let ext = path.extension().and_then(|e| e.to_str());
+        if ext != Some("md") {
+            non_md_files += 1;
             continue;
         }
 
-        if let Some(card) = parse_card(path) {
-            batch.push(card);
-            total += 1;
-
-            if batch.len() >= BATCH_SIZE {
-                let _ = app.emit(
-                    "scan-batch",
-                    ScanBatch {
-                        cards: batch.clone(),
-                        scanned_so_far: total,
-                    },
-                );
-                batch.clear();
+        match parse_card(path) {
+            Some(card) => {
+                batch.push(card);
+                total += 1;
+            }
+            None => {
+                parse_failures += 1;
+                log!("Failed to parse file: {:?}", path);
             }
         }
+
+        if batch.len() >= BATCH_SIZE {
+            let _ = app.emit(
+                "scan-batch",
+                ScanBatch {
+                    cards: batch.clone(),
+                    scanned_so_far: total,
+                },
+            );
+            batch.clear();
+        }
     }
+
+    log!("Files checked: {}, Non-md files: {}, Parse failures: {}", files_checked, non_md_files, parse_failures);
 
     // Emit remaining cards
     if !batch.is_empty() {
@@ -57,6 +80,7 @@ pub fn scan_directory(app: &AppHandle, dir: &str) {
     }
 
     let duration = start.elapsed();
+    log!("Scan complete. Total files: {}, Duration: {}ms", total, duration.as_millis());
     let _ = app.emit(
         "scan-complete",
         ScanComplete {
