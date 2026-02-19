@@ -7,7 +7,8 @@
 | 前端框架 | React | 19 |
 | 状态管理 | Zustand | 5 |
 | 样式 | Tailwind CSS | 4 |
-| Markdown 渲染 | react-markdown | 9 |
+| Markdown 渲染 | react-markdown + remark-gfm | 9 + 4 |
+| 瀑布流 | react-masonry-css | - |
 | 构建工具 | Vite | 6 |
 | 桌面运行时 | Tauri | 2 |
 | 后端语言 | Rust | - |
@@ -27,17 +28,22 @@ card-flow/
 │   │   ├── CardGrid.tsx          # 瀑布流卡片网格
 │   │   ├── CardItem.tsx          # 单张卡片
 │   │   ├── CardDetail.tsx        # 卡片详情面板（Markdown 预览/编辑）
+│   │   ├── SettingsPanel.tsx     # 设置面板
+│   │   ├── FloatingTool.tsx      # 悬浮工具栏
+│   │   ├── TimeDisplay.tsx       # 时间显示组件
 │   │   ├── EmptyState.tsx        # 空状态占位
 │   │   └── useWindowSize.ts      # 窗口尺寸 hook
 │   ├── hooks/
 │   │   ├── useCardFilter.ts      # 过滤 + 排序 (useMemo)
 │   │   └── useTauriEvents.ts     # 监听 Tauri 事件
 │   ├── lib/
-│   │   └── tauri.ts              # invoke() 类型封装
+│   │   ├── tauri.ts              # invoke() 类型封装
+│   │   └── timezone.ts           # 时区工具函数
 │   ├── stores/
 │   │   └── cardStore.ts          # Zustand 全局状态
 │   └── types/
-│       └── card.ts               # 共享类型定义
+│       ├── card.ts               # 卡片类型定义
+│       └── settings.ts           # 设置类型定义
 ├── src-tauri/src/                # Rust 后端
 │   ├── main.rs                   # Tauri 入口
 │   ├── lib.rs                    # 模块注册
@@ -57,11 +63,41 @@ card-flow/
 <App>
 ├── <Toolbar />            # 文件夹选择、搜索、排序控制
 ├── <TagFilter />          # 标签过滤按钮组
+├── <FloatingTool />       # 悬浮工具栏（时间显示、设置）
 ├── 新建卡片 UI (条件渲染)
 ├── <CardGrid>             # 瀑布流网格容器
 │   └── <CardItem /> × N   # 单张卡片（标题、标签、预览、元信息）
 └── <CardDetail />         # 右侧详情面板（Markdown 渲染 / 编辑器）
 ```
+
+## 组件说明
+
+### Toolbar.tsx
+顶栏组件，提供文件夹选择、搜索框和排序控制功能。
+
+### TagFilter.tsx
+标签过滤栏，自动聚合所有卡片的标签，支持多标签 AND 逻辑过滤。
+
+### CardGrid.tsx
+瀑布流卡片网格容器，使用 react-masonry-css 实现真正的瀑布流布局。
+
+### CardItem.tsx
+单张卡片组件，显示标题、标签、预览文字和元信息（创建时间、文件大小）。
+
+### CardDetail.tsx
+右侧详情面板，支持 Markdown 全文渲染和编辑模式。
+
+### SettingsPanel.tsx
+设置面板，用于配置应用参数。
+
+### FloatingTool.tsx
+悬浮工具栏，包含辅助功能和快捷操作入口。
+
+### TimeDisplay.tsx
+时间显示组件，显示当前时间或选定卡片的时间信息。
+
+### EmptyState.tsx
+空状态占位，当没有卡片时显示提示信息。
 
 ## 数据流
 
@@ -122,12 +158,42 @@ interface CardStore {
 
 ## 类型定义
 
+### card.ts
+
 ```typescript
 interface CardMeta {
-  path: string; title: string; tags: string[]
-  created: string | null; updated: string | null
-  preview: string; size: number
+  path: string;
+  title: string;
+  tags: string[];
+  created: string | null;
+  updated: string | null;
+  preview: string;
+  size: number;
 }
-type SortBy = "title" | "created" | "updated" | "size"
-type SortOrder = "asc" | "desc"
+
+type SortBy = "title" | "created" | "updated" | "size";
+type SortOrder = "asc" | "desc";
+```
+
+### settings.ts
+
+```typescript
+interface AppSettings {
+  theme: 'light' | 'dark' | 'system';
+  dateFormat: string;
+  timeZone: string;
+  cardPreviewLength: number;
+  autoRefresh: boolean;
+}
+```
+
+## 工具函数
+
+### timezone.ts
+
+```typescript
+// 时区相关工具函数
+export function formatDate(date: string | null, format: string, timeZone?: string): string;
+export function getLocalTimeZone(): string;
+export function convertTimeZone(date: string, fromZone: string, toZone: string): string;
 ```
