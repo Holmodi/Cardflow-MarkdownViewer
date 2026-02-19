@@ -27,8 +27,29 @@ Card-Flow is a Tauri 2 desktop app for browsing Markdown card notes. It uses a R
 
 ### Frontend (React + TypeScript)
 - **State**: Zustand store (`src/stores/cardStore.ts`) - `Map<path, CardMeta>` for cards
-- **Components**: Toolbar, CardGrid (masonry), CardItem, CardDetail (right sidebar)
+- **Components**: Toolbar, CardGrid (react-masonry-css), CardItem, CardDetail (right sidebar)
 - **Hooks**: `useCardFilter` (useMemo-based filtering/sorting), `useTauriEvents` (event listeners)
+
+### Card Layout Evolution
+
+#### v1: Manual Column Distribution (已废弃)
+- 使用 `useWindowSize` 监听窗口大小
+- 手动计算列数：`columnCount = windowWidth / (cardWidth + gap)`
+- 使用 `useMemo` 将卡片按 index 分配到各列
+- 问题：列内卡片等间距，无法实现紧密瀑布流
+
+#### v2: react-masonry-css (当前)
+- 使用 `react-masonry-css` 库实现真正的瀑布流
+- 响应式断点配置：
+  ```ts
+  const breakpointColumnsObj = {
+    default: 4,
+    1100: 3,
+    700: 2,
+    500: 1
+  };
+  ```
+- 优势：短卡片自动向上填充，卡片紧密排列
 
 ### Backend (Rust)
 - **scanner.rs**: Async directory scanning using `ignore` crate, emits `scan-batch` events
