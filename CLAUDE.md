@@ -164,7 +164,7 @@ gh release create v0.2.0 \
   -- /path/to/MarkDance_0.2.0_aarch64.dmg
 ```
 
-**注意**: GitHub 仓库已迁移至 https://github.com/Holmodi/Cardflow-MarkdownViewer
+**注意**: GitHub 仓库已迁移至 https://github.com/Holmodi/MarkDance-MarkdownViewer
 
 ### GitHub Release Commands
 
