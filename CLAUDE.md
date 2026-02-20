@@ -23,7 +23,7 @@ cd src-tauri && cargo check
 
 ## Architecture Overview
 
-Card-Flow is a Tauri 2 desktop app for browsing Markdown card notes. It uses a React frontend with Rust backend.
+MarkDance is a Tauri 2 desktop app for browsing Markdown card notes. It uses a React frontend with Rust backend.
 
 ### Frontend (React + TypeScript)
 - **State**: Zustand store (`src/stores/cardStore.ts`) - `Map<path, CardMeta>` for cards
@@ -157,7 +157,7 @@ npm run tauri build
 gh release create v0.1.0 \
   --title "v0.1.0" \
   --notes "## Changes..." \
-  -- /path/to/Card-Flow-Markdown-Viewer_0.1.0_aarch64.dmg
+  -- /path/to/MarkDance-Markdown-Viewer_0.1.0_aarch64.dmg
 ```
 
 ### GitHub Release Commands
@@ -176,8 +176,8 @@ gh release delete v0.1.0 -y
 ### macOS Bundle Location
 
 打包产物位于：
-- `.app`: `src-tauri/target/release/bundle/macos/Card-Flow-Markdown-Viewer.app`
-- `.dmg`: `src-tauri/target/release/bundle/dmg/Card-Flow-Markdown-Viewer_0.1.0_aarch64.dmg`
+- `.app`: `src-tauri/target/release/bundle/macos/MarkDance-Markdown-Viewer.app`
+- `.dmg`: `src-tauri/target/release/bundle/dmg/MarkDance-Markdown-Viewer_0.1.0_aarch64.dmg`
 
 ### Troubleshooting
 

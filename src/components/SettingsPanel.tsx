@@ -7,7 +7,6 @@ const sliders: { key: TranslationKey; settingsKey: string; min: number; max: num
   { key: "columnCount", settingsKey: "columnCount", min: 1, max: 5, step: 1 },
   { key: "titleFontSize", settingsKey: "titleFontSize", min: 12, max: 24, step: 1 },
   { key: "bodyFontSize", settingsKey: "bodyFontSize", min: 10, max: 20, step: 1 },
-  { key: "titleLines", settingsKey: "titleLines", min: 1, max: 5, step: 1 },
   { key: "previewLines", settingsKey: "previewLines", min: 1, max: 10, step: 1 },
   { key: "scanDepth", settingsKey: "scanDepth", min: 0, max: 5, step: 1 },
 ];

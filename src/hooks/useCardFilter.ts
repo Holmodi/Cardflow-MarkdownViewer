@@ -7,7 +7,6 @@ export function useCardFilter(): CardMeta[] {
   const searchQuery = useCardStore((s) => s.searchQuery);
   const selectedTags = useCardStore((s) => s.selectedTags);
   const sortBy = useCardStore((s) => s.sortBy);
-  const sortOrder = useCardStore((s) => s.sortOrder);
 
   return useMemo(() => {
     let result = Array.from(cards.values());
@@ -29,10 +28,13 @@ export function useCardFilter(): CardMeta[] {
       );
     }
 
-    // Sort
+    // Sort - parse sortBy to extract field and order
+    const [field, order] = sortBy.split("_") as [string, string];
+    const isAsc = order === "asc";
+
     result.sort((a, b) => {
       let cmp = 0;
-      switch (sortBy) {
+      switch (field) {
         case "title":
           cmp = a.title.localeCompare(b.title);
           break;
@@ -46,9 +48,9 @@ export function useCardFilter(): CardMeta[] {
           cmp = a.size - b.size;
           break;
       }
-      return sortOrder === "asc" ? cmp : -cmp;
+      return isAsc ? cmp : -cmp;
     });
 
     return result;
-  }, [cards, searchQuery, selectedTags, sortBy, sortOrder]);
+  }, [cards, searchQuery, selectedTags, sortBy]);
 }

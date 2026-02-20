@@ -2,7 +2,7 @@
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**目标:** 为 Card-Flow 实现现代简洁风格的美化，采用蓝紫色系、增加圆润感与微动画
+**目标:** 为 MarkDance 实现现代简洁风格的美化，采用蓝紫色系、增加圆润感与微动画
 
 **架构:** 基于 Tailwind CSS 进行主题定制，通过 CSS 变量和 utility classes 实现一致的视觉风格
 

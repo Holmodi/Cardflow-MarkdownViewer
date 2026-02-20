@@ -1,4 +1,4 @@
-# Card-Flow 架构文档
+# MarkDance 架构文档
 
 ## 技术栈
 
@@ -17,7 +17,7 @@
 ## 目录结构
 
 ```
-card-flow/
+markdance/
 ├── src/                          # React 前端
 │   ├── main.tsx                  # 入口，挂载 <App />
 │   ├── App.tsx                   # 根组件：布局 + 新建卡片

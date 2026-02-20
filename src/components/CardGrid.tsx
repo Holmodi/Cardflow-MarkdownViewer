@@ -5,6 +5,7 @@ import CardItem from "./CardItem";
 import EmptyState from "./EmptyState";
 import { useCardStore } from "../stores/cardStore";
 import { useWindowSize } from "./useWindowSize";
+import { t } from "../lib/i18n";
 
 export default function CardGrid() {
   const filteredCards = useCardFilter();
@@ -41,15 +42,15 @@ export default function CardGrid() {
 
   // 条件渲染必须在 hooks 之后
   if (!currentDir) {
-    return <EmptyState message="点击「打开文件夹」选择一个包含 .md 文件的目录" />;
+    return <EmptyState message={t("emptySelectFolder", settings.language)} language={settings.language} />;
   }
 
   if (filteredCards.length === 0 && !isScanning) {
     if (hasFilter) {
-      return <EmptyState message="没有找到匹配的卡片" />;
+      return <EmptyState message={t("emptyNoMatch", settings.language)} language={settings.language} />;
     }
     if (!hasCards) {
-      return <EmptyState message="该目录下没有 .md 文件" />;
+      return <EmptyState message={t("emptyNoFiles", settings.language)} language={settings.language} />;
     }
   }
 

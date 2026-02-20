@@ -1,8 +1,17 @@
+import type { Language } from "../types/settings";
+
 interface Props {
   message: string;
+  hint?: string;
+  language?: Language;
 }
 
-export default function EmptyState({ message }: Props) {
+export default function EmptyState({ message, hint, language = "en" }: Props) {
+  const hints: Record<Language, string> = {
+    en: "Start by creating your first card",
+    zh: "开始创建你的第一张卡片吧",
+  };
+
   return (
     <div className="flex flex-col items-center justify-center h-full text-center p-8">
       <div className="w-20 h-20 mb-6 rounded-full bg-slate-800/50 flex items-center justify-center">
@@ -12,7 +21,7 @@ export default function EmptyState({ message }: Props) {
         </svg>
       </div>
       <p className="text-slate-400 text-lg font-medium">{message}</p>
-      <p className="text-slate-600 text-sm mt-2">开始创建你的第一张卡片吧</p>
+      <p className="text-slate-600 text-sm mt-2">{hint ?? hints[language]}</p>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-# Card-Flow
+# MarkDance
 
 面向大规模 Markdown 碎片笔记的高性能卡片式预览工具。
 

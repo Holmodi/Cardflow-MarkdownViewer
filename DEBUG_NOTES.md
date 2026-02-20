@@ -1,4 +1,4 @@
-# Card-Flow 开发问题总结
+# MarkDance 开发问题总结
 
 ## 问题描述
 
@@ -137,8 +137,8 @@ npm run tauri build
 ### 2. 打包产物位置
 ```
 src-tauri/target/release/bundle/
-├── macos/Card-Flow-Markdown-Viewer.app
-└── dmg/Card-Flow-Markdown-Viewer_0.1.0_aarch64.dmg
+├── macos/MarkDance-Markdown-Viewer.app
+└── dmg/MarkDance-Markdown-Viewer_0.1.0_aarch64.dmg
 ```
 
 ### 3. GitHub CLI 验证登录状态

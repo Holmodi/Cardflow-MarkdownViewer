@@ -48,8 +48,6 @@ export default function Toolbar({ onRecentFolderToggle, isRecentFolderOpen }: { 
   const setSearchQuery = useCardStore((s) => s.setSearchQuery);
   const sortBy = useCardStore((s) => s.sortBy);
   const setSortBy = useCardStore((s) => s.setSortBy);
-  const sortOrder = useCardStore((s) => s.sortOrder);
-  const setSortOrder = useCardStore((s) => s.setSortOrder);
   const isScanning = useCardStore((s) => s.isScanning);
   const setIsScanning = useCardStore((s) => s.setIsScanning);
   const setCurrentDir = useCardStore((s) => s.setCurrentDir);
@@ -107,20 +105,21 @@ export default function Toolbar({ onRecentFolderToggle, isRecentFolderOpen }: { 
       <button
         onClick={handleOpenFolder}
         disabled={isScanning}
-        className="px-4 py-2 bg-primary-600 hover:bg-primary-500 disabled:opacity-50
-          text-white rounded-xl text-sm font-medium shadow-lg shadow-primary-600/20
-          transition-all duration-200 cursor-pointer"
+        className={`px-3 py-2 border rounded-xl text-sm transition-all duration-200 cursor-pointer ${
+          isScanning
+            ? "bg-primary-600 border-primary-500 text-white opacity-50"
+            : "bg-primary-600 border-primary-500 hover:bg-primary-500"
+        }`}
       >
         {isScanning ? (
-          <span className="flex items-center gap-2">
-            <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-            </svg>
-            {t("scanning", language)}
-          </span>
+          <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+          </svg>
         ) : (
-          t("openFolder", language)
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+          </svg>
         )}
       </button>
 
@@ -154,20 +153,15 @@ export default function Toolbar({ onRecentFolderToggle, isRecentFolderOpen }: { 
           focus:outline-none focus:border-primary-500/50 focus:ring-2 focus:ring-primary-500/20
           transition-all duration-200 cursor-pointer"
       >
-        <option value="title">{t("sortTitle", language)}</option>
-        <option value="created">{t("sortCreated", language)}</option>
-        <option value="updated">{t("sortUpdated", language)}</option>
-        <option value="size">{t("sortSize", language)}</option>
+        <option value="title_asc">{t("sortTitleAsc", language)}</option>
+        <option value="title_desc">{t("sortTitleDesc", language)}</option>
+        <option value="created_asc">{t("sortCreatedAsc", language)}</option>
+        <option value="created_desc">{t("sortCreatedDesc", language)}</option>
+        <option value="updated_asc">{t("sortUpdatedAsc", language)}</option>
+        <option value="updated_desc">{t("sortUpdatedDesc", language)}</option>
+        <option value="size_asc">{t("sortSizeAsc", language)}</option>
+        <option value="size_desc">{t("sortSizeDesc", language)}</option>
       </select>
-
-      <button
-        onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-        className="px-3 py-2 bg-slate-800/80 border border-slate-700 rounded-xl text-sm text-slate-300
-          hover:bg-slate-700 hover:text-white hover:border-slate-600
-          transition-all duration-200 cursor-pointer"
-      >
-        {sortOrder === "asc" ? "↑" : "↓"}
-      </button>
     </div>
   );
 }

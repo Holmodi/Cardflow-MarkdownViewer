@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicegui/nicegui/main/nicegui/static/tauri/tauri.conf.json",
-  "productName": "Card-Flow-Markdown-Viewer",
-  "version": "0.1.0",
+  "productName": "MarkDance",
+  "version": "0.2.0",
   "identifier": "com.cardflow.markdownviewer",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "Card-Flow-Markdown-Viewer",
+        "title": "MarkDance",
         "width": 1200,
         "height": 800,
         "resizable": true,

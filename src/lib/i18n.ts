@@ -7,10 +7,14 @@ export const translations = {
     scanning: "Scanning...",
     searchPlaceholder: "Search cards...",
     sortBy: "Sort by",
-    sortTitle: "Title",
-    sortCreated: "Created",
-    sortUpdated: "Updated",
-    sortSize: "Size",
+    sortTitleAsc: "Title(▲)",
+    sortTitleDesc: "Title(▼)",
+    sortCreatedAsc: "Created(▲)",
+    sortCreatedDesc: "Created(▼)",
+    sortUpdatedAsc: "Updated(▲)",
+    sortUpdatedDesc: "Updated(▼)",
+    sortSizeAsc: "Size(▲)",
+    sortSizeDesc: "Size(▼)",
     recentFolders: "Recent Folders",
     noRecentFolders: "No recent folders",
     clearRecent: "Clear Recent",
@@ -42,6 +46,11 @@ export const translations = {
     // Dialog
     confirmDelete: "Confirm Delete",
     confirmDeleteMessage: "Are you sure you want to delete this card? This action cannot be undone.",
+
+    // Empty State
+    emptySelectFolder: "Click \"Open Folder\" to select a directory with .md files",
+    emptyNoMatch: "No matching cards found",
+    emptyNoFiles: "No .md files in this directory",
   },
   zh: {
     // Toolbar
@@ -49,10 +58,14 @@ export const translations = {
     scanning: "扫描中...",
     searchPlaceholder: "搜索卡片...",
     sortBy: "排序",
-    sortTitle: "标题",
-    sortCreated: "创建时间",
-    sortUpdated: "更新时间",
-    sortSize: "大小",
+    sortTitleAsc: "标题(▲)",
+    sortTitleDesc: "标题(▼)",
+    sortCreatedAsc: "创建时间(▲)",
+    sortCreatedDesc: "创建时间(▼)",
+    sortUpdatedAsc: "更新时间(▲)",
+    sortUpdatedDesc: "更新时间(▼)",
+    sortSizeAsc: "大小(▲)",
+    sortSizeDesc: "大小(▼)",
     recentFolders: "最近文件夹",
     noRecentFolders: "无最近文件夹",
     clearRecent: "清除记录",
@@ -84,6 +97,11 @@ export const translations = {
     // Dialog
     confirmDelete: "确认删除",
     confirmDeleteMessage: "确定删除这张卡片？此操作无法撤销。",
+
+    // Empty State
+    emptySelectFolder: "点击「打开文件夹」选择一个包含 .md 文件的目录",
+    emptyNoMatch: "没有找到匹配的卡片",
+    emptyNoFiles: "该目录下没有 .md 文件",
   },
 } as const;
 

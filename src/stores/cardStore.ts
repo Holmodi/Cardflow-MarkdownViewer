@@ -6,7 +6,7 @@ import { scanDirectory } from "../lib/tauri";
 
 function loadSettings(): DisplaySettings {
   try {
-    const raw = localStorage.getItem("card-flow-settings");
+    const raw = localStorage.getItem("markdance-settings");
     if (raw) {
       const parsed = JSON.parse(raw);
       return {
@@ -28,7 +28,7 @@ function loadSettings(): DisplaySettings {
 
 function loadRecentDirs(): string[] {
   try {
-    const raw = localStorage.getItem("card-flow-recent-dirs");
+    const raw = localStorage.getItem("markdance-recent-dirs");
     if (raw) {
       return JSON.parse(raw);
     }
@@ -38,7 +38,7 @@ function loadRecentDirs(): string[] {
 
 function loadLastDir(): string | null {
   try {
-    return localStorage.getItem("card-flow-last-dir");
+    return localStorage.getItem("markdance-last-dir");
   } catch {
     return null;
   }
@@ -85,7 +85,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
   cards: new Map(),
   searchQuery: "",
   selectedTags: [],
-  sortBy: "created",
+  sortBy: "created_desc",
   sortOrder: "desc",
   selectedCard: null,
   isScanning: false,
@@ -133,12 +133,12 @@ export const useCardStore = create<CardStore>((set, get) => ({
   setIsScanning: (isScanning) => set({ isScanning }),
   setCurrentDir: (currentDir) => {
     if (currentDir) {
-      localStorage.setItem("card-flow-last-dir", currentDir);
+      localStorage.setItem("markdance-last-dir", currentDir);
       // 添加到最近文件夹
       const { recentDirs } = get();
       const filtered = recentDirs.filter((d) => d !== currentDir);
       const updated = [currentDir, ...filtered].slice(0, 10);
-      localStorage.setItem("card-flow-recent-dirs", JSON.stringify(updated));
+      localStorage.setItem("markdance-recent-dirs", JSON.stringify(updated));
       set({ currentDir, recentDirs: updated });
     }
   },
@@ -146,7 +146,7 @@ export const useCardStore = create<CardStore>((set, get) => ({
   updateSettings: (partial) =>
     set((state) => {
       const next = { ...state.settings, ...partial };
-      localStorage.setItem("card-flow-settings", JSON.stringify(next));
+      localStorage.setItem("markdance-settings", JSON.stringify(next));
       return { settings: next };
     }),
   loadLastDir: () => {
@@ -170,11 +170,11 @@ export const useCardStore = create<CardStore>((set, get) => ({
     // 移除已存在的路径并添加到最前面
     const filtered = recentDirs.filter((d) => d !== dir);
     const updated = [dir, ...filtered].slice(0, 10); // 保留最多10个
-    localStorage.setItem("card-flow-recent-dirs", JSON.stringify(updated));
+    localStorage.setItem("markdance-recent-dirs", JSON.stringify(updated));
     set({ recentDirs: updated });
   },
   clearRecentDirs: () => {
-    localStorage.setItem("card-flow-recent-dirs", "[]");
+    localStorage.setItem("markdance-recent-dirs", "[]");
     set({ recentDirs: [] });
   },
   setDeleteConfirmPath: (path) => set({ deleteConfirmPath: path }),

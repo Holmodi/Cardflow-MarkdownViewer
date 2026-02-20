@@ -26,5 +26,5 @@ export interface FileEvent {
   card: CardMeta | null;
 }
 
-export type SortBy = "title" | "created" | "updated" | "size";
+export type SortBy = "title_asc" | "title_desc" | "created_asc" | "created_desc" | "updated_asc" | "updated_desc" | "size_asc" | "size_desc";
 export type SortOrder = "asc" | "desc";
